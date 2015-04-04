@@ -1,12 +1,19 @@
 #!/usr/bin/env ruby
 
+require 'logger'
+
 require 'trollop'
 
 require 'boofar'
 
+VERSION_LINE = "boofar v#{Boofar::VERSION} (c) 2015 Norbert Melzer"
+
+display_summary = ARGV.empty?
+logger = Logger.new(STDOUT)
+
 SUB_COMMANDS = %w(new deploy build watch)
 global_opts = Trollop::options do
-  version "boofar v#{version} (c) 2015 Norbert Melzer"
+  version VERSION_LINE
   banner <<-EOS
 boofar is a static site generator.
 
@@ -17,9 +24,22 @@ Usage:
     boofar [global options] build [options]
     boofar [global options] watch [options]
 where [global options] are
+
+Information about boofar:
 EOS
 
-  opt :verbose, "Activate verbose output"
+  opt :version, "Print version and exit"
+  opt :help,    "Show this message"
+
+  banner <<-EOS
+
+Controlling verbosity (one of):
+EOS
+
+  opt :verbose,     "Activate verbose output",      type: :flag, short: 'V'
+  opt :informative, "Standard amount of output",    type: :flag, short: 'I'
+  opt :quiet,       "Surpress (nearly) all output", type: :flag, short: 'Q'
+  conflicts :verbose, :quiet, :informative
 
   stop_on SUB_COMMANDS
 end
@@ -27,13 +47,39 @@ end
 cmd = ARGV.shift
 cmd_opts = case cmd
   when "new"
+    Trollop::options do
+      version VERSION_LINE
+      banner <<-EOS
+Usage:
+    boofar new <site name> [options]
+
+Creates a folder named <site name> and creates an empty site skelleton.
+
+where [options] are
+EOS
+
+      opt :folder, "Overrides folder name, usefull when <site name> contains spaces or other special characters", type: :string
+      opt :git,    "Create a git repository", type: :flag, default: true
+    end
   when "deploy"
   when "build"
   when "watch"
   when ""
+  when nil
   else
     Trollop::die "unknown subcommand '#{cmd.inspect}'"
-  end 
+  end
+
+logger.level = if global_opts[:verbose] then
+  Logger::DEBUG
+elsif global_opts[:quiet] then
+  Logger::WARN
+else
+  Logger::INFO
+end
+
+
+Trollop::educate if display_summary
 
 puts "Global options:      #{global_opts.inspect}"
 puts "Subcommand:          #{cmd.inspect}"
