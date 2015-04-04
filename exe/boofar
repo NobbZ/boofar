@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+require 'trollop'
+
+require 'boofar'
+
+SUB_COMMANDS = %w(new deploy build watch)
+global_opts = Trollop::options do
+  version "boofar v#{version} (c) 2015 Norbert Melzer"
+  banner <<-EOS
+boofar is a static site generator.
+
+Usage:
+    boofar [global options]
+    boofar [global options] new <site name> [options]
+    boofar [global options] deploy <target> [options]
+    boofar [global options] build [options]
+    boofar [global options] watch [options]
+where [global options] are
+EOS
+
+  opt :verbose, "Activate verbose output"
+
+  stop_on SUB_COMMANDS
+end
+
+cmd = ARGV.shift
+cmd_opts = case cmd
+  when "new"
+  when "deploy"
+  when "build"
+  when "watch"
+  when ""
+  else
+    Trollop::die "unknown subcommand '#{cmd.inspect}'"
+  end 
+
+puts "Global options:      #{global_opts.inspect}"
+puts "Subcommand:          #{cmd.inspect}"
+puts "Subcommand options:  #{cmd_opts.inspect}"
+puts "Remaining arguments: #{ARGV.inspect}"
