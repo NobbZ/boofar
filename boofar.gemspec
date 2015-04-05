@@ -31,6 +31,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'fuubar',    '~> 2.0.0'
   spec.add_development_dependency 'yard',      '~> 0.8.7.6' unless RUBY_PLATFORM == 'java'
   spec.add_development_dependency 'redcarpet', '~> 3.2.2'   unless RUBY_PLATFORM == 'java'
-    
-  end
 end
