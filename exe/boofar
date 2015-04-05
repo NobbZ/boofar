@@ -6,44 +6,10 @@ require 'trollop'
 
 require 'boofar'
 
-VERSION_LINE = "boofar v#{Boofar::VERSION} (c) 2015 Norbert Melzer"
 
-display_summary = ARGV.empty?
-logger = Logger.new(STDOUT)
+Boofar::CLI.new ARGV
 
-SUB_COMMANDS = %w(new deploy build watch)
-global_opts = Trollop::options do
-  version VERSION_LINE
-  banner <<-EOS
-boofar is a static site generator.
-
-Usage:
-    boofar [global options]
-    boofar [global options] new <site name> [options]
-    boofar [global options] deploy <target> [options]
-    boofar [global options] build [options]
-    boofar [global options] watch [options]
-where [global options] are
-
-Information about boofar:
-EOS
-
-  opt :version, "Print version and exit"
-  opt :help,    "Show this message"
-
-  banner <<-EOS
-
-Controlling verbosity (one of):
-EOS
-
-  opt :verbose,     "Activate verbose output",      type: :flag, short: 'V'
-  opt :informative, "Standard amount of output",    type: :flag, short: 'I'
-  opt :quiet,       "Surpress (nearly) all output", type: :flag, short: 'Q'
-  conflicts :verbose, :quiet, :informative
-
-  stop_on SUB_COMMANDS
-end
-
+=begin
 cmd = ARGV.shift
 cmd_opts = case cmd
   when "new"
@@ -70,14 +36,6 @@ EOS
     Trollop::die "unknown subcommand '#{cmd.inspect}'"
   end
 
-logger.level = if global_opts[:verbose] then
-  Logger::DEBUG
-elsif global_opts[:quiet] then
-  Logger::WARN
-else
-  Logger::INFO
-end
-
 
 Trollop::educate if display_summary
 
@@ -85,3 +43,4 @@ puts "Global options:      #{global_opts.inspect}"
 puts "Subcommand:          #{cmd.inspect}"
 puts "Subcommand options:  #{cmd_opts.inspect}"
 puts "Remaining arguments: #{ARGV.inspect}"
+=end
