@@ -14,6 +14,16 @@ describe String do
         expect(String.to_constant k).to be v
       end
     end
+
+    it { expect{"FOODLEBAR_DOES_NOT_EXISTS".to_constant}.to raise_error NotAConstant, /FOODLEBAR_DOES_NOT_EXISTS/ }
+    it { expect{String.to_constant "FOODLEBAR_DOES_NOT_EXISTS"}.to raise_error NotAConstant, /FOODLEBAR_DOES_NOT_EXISTS/ }
+
+    it { expect{"foo".to_constant}.to raise_error NotAConstant }
+    it { expect{String.to_constant "foo"}.to raise_error NotAConstant }
+
+    [ 2, :bar, ["baz"] ].each do |value|
+      it { expect{String.to_constant value}.to raise_error ArgumentError }
+    end
   end
 
   context :upcase_first do
@@ -28,6 +38,10 @@ describe String do
         expect(String.upcase_first k).to eql v
       end
     end
+
+    [ 2, :bar, ["baz"] ].each do |value|
+      it { expect{String.upcase_first value}.to raise_error ArgumentError }
+    end
   end
 
   context :lowercase_first do
@@ -41,6 +55,10 @@ describe String do
       it "should lowercase the first letter of '#{k}' to '#{v}' (class)" do
         expect(String.lowercase_first k).to eql v
       end
+    end
+
+    [ 2, :bar, ["baz"] ].each do |value|
+      it { expect{String.lowercase_first value}.to raise_error ArgumentError }
     end
   end
 end
