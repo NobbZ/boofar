@@ -17,7 +17,7 @@ install:
 script:
   - >
     if [[ $TEST_DOC == true ]]; then
-      rake doc | tail -1 | ruby -e "((/\\d+.\\d+/.match readline)[0].to_f >= 80) ? (exit 0) : (exit 1)"
+      bundle exec rake doc_cover
     else
       bundle exec rake spec
     fi
