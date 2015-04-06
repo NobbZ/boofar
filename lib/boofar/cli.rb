@@ -4,10 +4,18 @@ require 'trollop'
 require 'boofar'
 
 module Boofar
+  # Runner for the commandline tool
+  #
+  # @since 0.0.1
+  # @author Norbert Melzer <timmelzer@gmail.com>
   class CLI
     VERSION_LINE = "boofar v#{Boofar::VERSION} (c) 2015 Norbert Melzer"
     SUB_COMMANDS = %w(new deploy build watch)
 
+    private_constant :VERSION_LINE
+    private_constant :SUB_COMMANDS
+
+    # @author Norbert Melzer <timmelzer@gmail.com>
     def initialize args
       # Initialize the logger
       @logger = Logger.new(STDOUT)
@@ -35,6 +43,7 @@ module Boofar
       end
     end
 
+  private
     def read_global_opts args
       @global_opts = Trollop::options args do
         version VERSION_LINE
