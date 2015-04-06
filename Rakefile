@@ -27,17 +27,6 @@ if RUBY_PLATFORM != 'java' then
       puts "No Yard found, you are not able to build documentation"
     end
   end
-
-  begin
-    require 'yardstick/rake/verify'
-    Yardstick::Rake::Verify.new(:yardstick) do |v|
-      v.threshold = 80
-    end
-  rescue LoadError
-    task :yardstick do
-      puts "Yardstick is not available"
-    end
-  end
 else
   task :doc do
     puts "You are running jruby, it is currently not possible to build docs with it"
