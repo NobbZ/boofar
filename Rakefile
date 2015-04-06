@@ -21,7 +21,7 @@ if RUBY_PLATFORM != 'java' then
                         'CODE_OF_CONDUCT.md']
       t.options  = ['--markup-provider=redcarpet',
                     '--markup', 'markdown']
-      t.options << '--list-undoc' if ENV["CI"].nil?
+      t.stats_options << '--list-undoc' if ENV["CI"].nil?
     end
 
     task :doc_cover do
