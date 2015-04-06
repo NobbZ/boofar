@@ -15,7 +15,8 @@ install:
   - gem install bundler --version "~> 1.8"
   - bundle
 script:
-  - > if $TEST_DOC then; rake doc | tail -1 | ruby -e "((/\\d+.\\d+/.match readline)[0].to_f >= 80) ? (exit 0) : (exit 1)\"; else bundle exec rake spec; fi
+  - >
+    if $TEST_DOC then; rake doc | tail -1 | ruby -e "((/\\d+.\\d+/.match readline)[0].to_f >= 80) ? (exit 0) : (exit 1)\"; else bundle exec rake spec; fi
 matrix:
   exclude:
     - env: TEST_DOC=0
